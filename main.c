@@ -114,6 +114,8 @@ int main(void)
 
 	if(ret1 != 0)
 	{
+		g_ucMoniFlg = 0;
+		g_ucInptFlg = 0;
 		printf("Can not create moniThread");
 		return 0;
 	}
@@ -121,7 +123,14 @@ int main(void)
 	ret2 = pthread_create(&inptThread,NULL,(void *)inptTask,NULL);
 	if(ret2 != 0)
 	{
+		g_ucMoniFlg = 0;
+		g_ucInptFlg = 0;
 		printf("Can not create inptThread");
+		ret1 = pthread_join(moniThread,NULL);
+		if(ret1!=0)
+		{
+			printf("Can not join moniThread");
+		}
 		return 0;
 	}
 
@@ -129,15 +138,12 @@ int main(void)
 	if(ret2!=0)
 	{
 		printf("Can not join inptThread");
-		return 0;
-
 	}
 
 	ret1 = pthread_join(moniThread,NULL);
 	if(ret1!=0)
 	{
 		printf("Can not join moniThread");
-		return 0;
 	}
 
 	return 0;
